@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const stepDesc = document.querySelector('.calendar-table').nextElementSibling;
         if (stepDesc) {
-            stepDesc.innerHTML = `원하시는 날짜를 선택하세요.<br><span style="color:#0056b3; font-weight:bold; font-size:0.9em;">(예약은 매주 월요일 오전 10시에 차례로 오픈됩니다)</span>`;
+            stepDesc.innerHTML = `원하시는 날짜를 선택하세요.<br><span style="color:#0056b3; font-weight:bold; font-size:0.9em;">(⏰ 예약 오픈: 이용 전날 19:00 ~ 23:00)</span>`;
         }
         
         const firstDay = new Date(year, month - 1, 1).getDay();
