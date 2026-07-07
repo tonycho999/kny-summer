@@ -14,17 +14,18 @@
             text-align: center;
         }
 
-        /* 첫 번째 줄 (큰 이미지 2장) */
+        /* ⭐️ 첫 번째 줄 (큰 이미지 2장) 중앙 정렬 */
         .top-images {
             display: flex;
             gap: 15px;
             width: 100%;
-            margin-bottom: 15px; /* 아래 갤러리와의 간격 맞춤 */
+            max-width: 1200px;      /* 전체 가로 폭 제한 */
+            margin: 0 auto 2rem auto; /* 상하 간격 유지 및 좌우 자동 마진으로 정중앙 배치 */
         }
         .top-images img {
-            flex: 1; /* 가로폭을 남김없이 반반씩 꽉 채움 */
+            flex: 1; 
             width: 100%;
-            height: 350px; /* 첫 줄 이미지 높이 고정 */
+            height: 350px; 
             object-fit: cover;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -34,16 +35,18 @@
             transform: scale(1.02);
         }
 
-        /* 나머지 줄 이미지 그리드 (3칸) */
+        /* ⭐️ 나머지 줄 이미지 그리드 (3칸) 중앙 정렬 */
         .gallery {
             display: grid;
             grid-template-columns: repeat(3, 1fr); 
             gap: 15px;
-            width: 100%; /* 전체 폭 100% 일치 */
+            width: 100%;
+            max-width: 1200px; /* 첫 번째 줄과 최대 가로 폭을 일치시켜 정렬선 일치 */
+            margin: 0 auto;    /* 좌우 자동 마진으로 정중앙 배치 */
         }
         .gallery img {
             width: 100%;
-            height: 280px; /* 200px -> 280px로 키워 더 크고 시원하게 보이도록 수정 */
+            height: 280px; 
             object-fit: cover;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -53,11 +56,12 @@
             transform: scale(1.03);
         }
 
-        /* 모바일에서는 2칸으로 */
+        /* 모바일 반응형 대응 */
         @media (max-width: 768px) {
             .top-images {
                 flex-direction: column;
                 gap: 10px;
+                margin-bottom: 10px;
             }
             .top-images img {
                 height: 250px;
@@ -76,7 +80,7 @@
     <div id="header-placeholder"></div>
 
     <main class="container">
-        <h1 style="text-align: center;">환영합니다!</h1>
+        <h1 style="text-align: center; margin-top: 2rem;">환영합니다!</h1>
         <p class="intro-text">서서울호수공원 어린이 물놀이장의 생생한 현장 모습을 확인하시고, 상단 메뉴를 통해 예약을 진행해 주세요.</p>
         
         <div class="top-images">
@@ -110,7 +114,7 @@
                 const footerRes = await fetch('footer.html');
                 document.getElementById('footer-placeholder').innerHTML = await footerRes.text();
                 
-                // 헤더를 불러온 직후에 모바일 메뉴 토글 이벤트 다시 연결
+                // 모바일 메뉴 토글 이벤트 바인딩
                 const menuToggle = document.getElementById('menuToggle');
                 const navMenu = document.getElementById('navMenu');
                 if (menuToggle && navMenu) {
@@ -123,7 +127,6 @@
             }
         }
         
-        // 페이지 로드 시 즉시 실행
         loadIncludes();
     </script>
 </body>
