@@ -9,20 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
             exceptions: ["2026-08-17"], 
             capacity: 60,    
             slots: [
-                "1회차 (11:00~11:50)", "2회차 (12:00~12:50)", "3회차 (14:00~14:50)",
-                "4회차 (15:00~15:50)", "5회차 (16:00~16:50)", "6회차 (17:00~17:50)"
+                "1회차 "
             ]
         },
-        "장소 2 (갈현동)": {
-            start: "2026-07-25",
-            end: "2026-08-17",
-            closedDays: [2], // 매주 화요일(2) 휴장
-            capacity: 130,   
-            slots: [
-                "1회차 (10:00~11:00)", "2회차 (11:30~12:30)", 
-                "3회차 (13:00~14:00)", "4회차 (14:30~15:30)", "5회차 (16:00~17:00)"
-            ]
-        }
     };
 
     const API_BASE = 'https://reservation-api.tonycho999.workers.dev';
@@ -32,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let selectedLocation = document.querySelector('input[name="locationSelect"]:checked')?.value;
     if (!selectedLocation || !RULES[selectedLocation]) {
-        selectedLocation = "장소 1 (문원 체육공원)"; 
+        selectedLocation = "서서울호수공원 문화테크광장"; 
     }
 
     const calendarBody = document.getElementById('calendarBody');
@@ -103,16 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. 주차별 월요일 오전 10시 오픈 매핑 테이블 매칭
         let openTimeISO = "";
         if (selectedLocation === "장소 1 (문원 체육공원)") {
-            if (dateStr >= "2026-07-05" && dateStr <= "2026-07-19") openTimeISO = "2026-07-06T10:00:00";
-            else if (dateStr >= "2026-07-20" && dateStr <= "2026-07-26") openTimeISO = "2026-07-13T10:00:00";
-            else if (dateStr >= "2026-07-27" && dateStr <= "2026-08-02") openTimeISO = "2026-07-20T10:00:00";
-            else if (dateStr >= "2026-08-03" && dateStr <= "2026-08-09") openTimeISO = "2026-07-27T10:00:00";
-            else if (dateStr >= "2026-08-10" && dateStr <= "2026-08-17") openTimeISO = "2026-08-03T10:00:00";
-        } else if (selectedLocation === "장소 2 (갈현동)") {
-            if (dateStr >= "2026-07-25" && dateStr <= "2026-07-26") openTimeISO = "2026-07-13T10:00:00";
-            else if (dateStr >= "2026-07-27" && dateStr <= "2026-08-02") openTimeISO = "2026-07-20T10:00:00";
-            else if (dateStr >= "2026-08-03" && dateStr <= "2026-08-09") openTimeISO = "2026-07-27T10:00:00";
-            else if (dateStr >= "2026-08-10" && dateStr <= "2026-08-17") openTimeISO = "2026-08-03T10:00:00";
+            if (dateStr >= "2026-07-21" && dateStr <= "2026-08-23") openTimeISO = "2026-07-20T19:00:00";
+            else if (dateStr >= "2026-08-21" && dateStr <= "2026-08-26") openTimeISO = "2026-08-20T10:00:00";
         }
 
         // 범위에 속하지 않는 예외 날짜 예약 차단
