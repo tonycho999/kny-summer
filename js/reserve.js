@@ -1,28 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // === ⭐️ 2026년 운영 정책 설정 ===
+    // === ⭐️ 2026년 서서울호수공원 운영 정책 설정 ===
     const RULES = {
-        "장소 1 (문원 체육공원)": {
-            start: "2026-07-11",
-            end: "2026-08-17",
+        "서서울호수공원": {
+            start: "2026-07-21",
+            end: "2026-08-23",
             closedDays: [1], // 매주 월요일(1) 휴장
-            exceptions: ["2026-08-17"], 
-            capacity: 60,    
+            exceptions: [], 
+            capacity: 150,   // 사전예약 150명 정원
             slots: [
-                "1회차 "
+                "1부 (10:00~13:00)", 
+                "2부 (14:00~17:00)"
             ]
-        },
+        }
     };
 
-    const API_BASE = 'https://reservation-api.tonycho999.workers.dev';
+    // ⭐️ 새롭게 생성한 서서울호수공원 전용 API 서버 주소
+    const API_BASE = 'https://kny-summerdb.tonycho999.workers.dev';
 
     let currentYear = 2026;
     let currentMonth = 7;
     
-    let selectedLocation = document.querySelector('input[name="locationSelect"]:checked')?.value;
-    if (!selectedLocation || !RULES[selectedLocation]) {
-        selectedLocation = "서서울호수공원 문화테크광장"; 
-    }
+    // 단일 장소 고정
+    let selectedLocation = "서서울호수공원";
 
     const calendarBody = document.getElementById('calendarBody');
     const currentMonthDisplay = document.getElementById('currentMonth');
@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const hiddenDateInput = document.getElementById('date');
 
     // 기본 시간표 비활성화 렌더링
-    function renderDefaultTimeSlots(locationName) {
-        const rule = RULES[locationName];
+    function renderDefaultTimeSlots() {
+        const rule = RULES[selectedLocation];
         if (!rule) return;
 
         timeListContainer.innerHTML = ''; 
@@ -50,36 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 장소 탭 변경 이벤트
-    const locationRadios = document.querySelectorAll('input[name="locationSelect"]');
-    locationRadios.forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            document.querySelectorAll('.tab-label').forEach(label => {
-                label.style.borderColor = '#ccc';
-                label.querySelector('.tab-text').style.color = '#666';
-                label.querySelector('.tab-text').style.fontWeight = 'normal';
-            });
-            e.target.parentElement.style.borderColor = '#0056b3';
-            e.target.parentElement.querySelector('.tab-text').style.color = '#0056b3';
-            e.target.parentElement.querySelector('.tab-text').style.fontWeight = 'bold';
-            
-            selectedLocation = e.target.value;
-            hiddenDateInput.value = ''; 
-            selectedDateDisplay.textContent = '날짜를 먼저 선택해주세요';
-            
-            renderCalendar(currentYear, currentMonth);
-            renderDefaultTimeSlots(selectedLocation); 
-        });
-    });
-
-    // === ⭐️ 주차별 예약 오픈 스케줄 반영 로직 ===
+    // === ⭐️ [임시] 주차별 예약 오픈 스케줄 반영 로직 ===
+    // 현재 정책 미정으로, 기본값인 '이용일 하루 전 19:00 오픈' 로직을 임시로 적용해 두었습니다.
     function isSelectable(dateStr, rule) {
         const [y, m, d] = dateStr.split('-').map(Number);
-        
-        // 대상(예약하려는) 날짜 객체 생성
         const targetDate = new Date(y, m - 1, d, 0, 0, 0);
         
-        // 운영 기간 설정
         const start = new Date(rule.start);
         const end = new Date(rule.end);
         start.setHours(0, 0, 0, 0);
@@ -89,19 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (targetDate < start || targetDate > end) return false;
         if (!rule.exceptions?.includes(dateStr) && rule.closedDays.includes(targetDate.getDay())) return false;
 
-        // 2. 주차별 월요일 오전 10시 오픈 매핑 테이블 매칭
-        let openTimeISO = "";
-        if (selectedLocation === "장소 1 (문원 체육공원)") {
-            if (dateStr >= "2026-07-21" && dateStr <= "2026-08-23") openTimeISO = "2026-07-20T19:00:00";
-            else if (dateStr >= "2026-08-21" && dateStr <= "2026-08-26") openTimeISO = "2026-08-20T10:00:00";
-        }
-
-        // 범위에 속하지 않는 예외 날짜 예약 차단
-        if (!openTimeISO) return false;
-
-        const [oy, om, od] = openTimeISO.split('T')[0].split('-').map(Number);
-        const [oh, omin, os] = openTimeISO.split('T')[1].split(':').map(Number);
-        const openTime = new Date(oy, om - 1, od, oh, omin, os);
+        // 2. 예약 오픈 시간 설정 (임시: 하루 전 19:00)
+        const openTime = new Date(targetDate);
+        openTime.setDate(openTime.getDate() - 1); // 하루 전
+        openTime.setHours(19, 0, 0, 0);           // 19시 정각
 
         // 3. 현재 한국 시간(KST) 구하기
         const formatter = new Intl.DateTimeFormat('en-US', {
@@ -153,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         cell.addEventListener('click', () => handleDateClick(cell, dateStr));
                     } else {
                         cell.classList.add('disabled');
-                        cell.title = '아직 예약이 오픈되지 않았거나 예약 불가한 날짜(휴장일 등)입니다.\n(예약은 매주 월요일 오전 10시 오픈)';
+                        cell.title = '아직 예약이 오픈되지 않았거나 예약 불가한 날짜(휴장일 등)입니다.';
                     }
                     date++;
                 }
@@ -219,12 +186,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             timeListContainer.innerHTML = '<p style="color:red; text-align:center;">데이터를 불러오는 데 실패했습니다.</p>';
-            renderDefaultTimeSlots(selectedLocation); 
+            renderDefaultTimeSlots(); 
         }
     }
 
     renderCalendar(currentYear, currentMonth);
-    renderDefaultTimeSlots(selectedLocation);
+    renderDefaultTimeSlots();
 
     // === 인원수 증감 및 폼 제출 ===
     const btnMinus = document.getElementById('btnMinus');
@@ -244,13 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const timeSlot = document.querySelector('input[name="timeSlot"]:checked');
             if (!timeSlot) return alert('예약 시간을 선택해주세요.');
             
-            // ⭐️ 과천 시민 검증 로직 추가 ⭐️
-            const address1 = document.getElementById('address1').value;
-            if (!address1.includes('과천')) {
-                alert('죄송합니다. 과천 물놀이장은 과천 시민만 예약이 가능합니다.\n올바른 과천시 주소를 입력해 주세요.');
-                return; // 여기서 더 이상 진행하지 않고 막습니다.
-            }
-
             const agree = document.getElementById('privacyAgree');
             if (!agree.checked) return alert('개인정보 수집 및 이용에 동의해주세요.');
 
@@ -305,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     formContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
                 } else {
-                    alert(`예약 처리 중 오류가 발생했습니다: ${result.message || result.error || '알 수 없는 오류'}`);
+                    alert(`예약 처리 중 오류가 발생했습니다: \n${result.message || result.error || '알 수 없는 오류'}`);
                     submitBtn.textContent = '예약 신청하기';
                     submitBtn.disabled = false;
                 }
@@ -317,13 +277,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
-function execDaumPostcode() {
-    new daum.Postcode({
-        oncomplete: function(data) {
-            document.getElementById('postcode').value = data.zonecode;
-            document.getElementById('address1').value = data.address;
-            document.getElementById('address2').focus();
-        }
-    }).open();
-}
