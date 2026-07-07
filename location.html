@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>오시는길</title>
+    <title>오시는길 - 서서울호수공원 어린이 물놀이장</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
         /* 오시는길 전용 스타일 */
@@ -31,11 +31,11 @@
             font-weight: bold;
         }
         
-        /* 지도 이미지 컨테이너 (600x375 비율 고려) */
+        /* 지도 이미지 컨테이너 */
         .map-image-container {
             width: 100%;
-            max-width: 600px; /* PC에서 이미지가 너무 커지지 않도록 최대 넓이 고정 */
-            margin: 0 auto;   /* 이미지 가운데 정렬 */
+            max-width: 800px; 
+            margin: 0 auto;   
             position: relative;
             cursor: pointer;
             border: 1px solid #ddd;
@@ -52,7 +52,6 @@
             width: 100%;       
             height: auto;      
             display: block;
-            aspect-ratio: 600 / 375; /* 브라우저에 명시적인 비율(1.6:1) 제공 */
             object-fit: cover;
         }
         
@@ -72,59 +71,23 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo"><a href="index.html">과천 물놀이장 예약 시스템</a></div>
-        <button class="menu-toggle" id="menuToggle">☰</button>
-        <nav id="navMenu">
-            <ul>
-                <li><a href="period.html">운영기간안내</a></li>
-                <li><a href="guide.html">이용안내</a></li>
-                <li><a href="reserve.html">예약하기</a></li>
-                <li><a href="check.html">예약조회/취소</a></li>
-                <li><a href="location.html">오시는길</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div id="header-placeholder"></div>
 
     <main class="container location-wrap">
         <h2 style="text-align: center; margin-bottom: 2rem;">오시는길</h2>
 
-        <!-- 장소 1 -->
         <div class="location-card">
-            <h3>📍 문원동 물놀이장</h3>
-            <p>경기도 과천시 문원로 56 문원체육공원</p>
-            <!-- 이미지 경로 및 클릭 이벤트 -->
-            <div class="map-image-container" onclick="openNaverMap('경기도 과천시 문원로 56')">
-                <img src="public/images/map56.png" alt="잭과나무 물놀이터 지도">
+            <h3>📍 서서울호수공원 문화테크광장</h3>
+            <p>서울특별시 양천구 남부순환로64길 20</p>
+            
+            <div class="map-image-container" onclick="openNaverMap('서울특별시 양천구 남부순환로64길 20 서서울호수공원')">
+                <img src="public/images/map1.jpg" alt="서서울호수공원 문화테크광장 지도">
                 <span class="map-text">🗺️ 네이버 지도에서 보기</span>
             </div>
         </div>
-        <!-- 장소 2 -->
-        <div class="location-card">
-            <h3>📍 갈현동 물놀이장</h3>
-            <p>경기도 과천시 갈현동 846</p>
-            <!-- 이미지 경로 및 클릭 이벤트 -->
-            <div class="map-image-container" onclick="openNaverMap('경기도 과천시 갈현동 846')">
-                <img src="public/images/map846.png" alt="갈현동 846 지도">
-                <span class="map-text">🗺️ 네이버 지도에서 보기</span>
-            </div>
-        </div>
-
-
-
     </main>
-    <footer>
-        <div class="company-name">케이앤와이 주식회사 (KNY Company)</div>
-        <div class="footer-info">
-            <span>대표 : 강경란</span> <span class="divider">|</span> 
-            <span>주소 : 서울 노원구 상계동 1320, 상가동 2층</span><br>
-            <span>사업자등록번호 : 388-81-01529</span> <span class="divider">|</span> 
-            <span>통신판매업신고 : 신고면제</span><br>
-            <span>전화 : 1566-4308</span> <span class="divider">|</span> 
-            <span>메일 : <a href="mailto:kny-company@naver.com">kny-company@naver.com</a></span>
-        </div>
-        <div>&copy; 2026 KNY Company. All Rights Reserved.</div>
-    </footer>
+
+    <div id="footer-placeholder"></div>
     
     <script src="js/main.js"></script>
     <script>
@@ -146,6 +109,25 @@
                 window.open(pcUrl, '_blank');
             }
         }
+
+        // 헤더 및 푸터 로드 함수
+        async function loadIncludes() {
+            try {
+                const headerRes = await fetch('header.html');
+                document.getElementById('header-placeholder').innerHTML = await headerRes.text();
+                
+                const footerRes = await fetch('footer.html');
+                document.getElementById('footer-placeholder').innerHTML = await footerRes.text();
+                
+                const menuToggle = document.getElementById('menuToggle');
+                const navMenu = document.getElementById('navMenu');
+                if (menuToggle && navMenu) {
+                    menuToggle.addEventListener('click', () => { navMenu.classList.toggle('active'); });
+                }
+            } catch (error) { console.error("헤더/푸터 로드 실패", error); }
+        }
+        
+        loadIncludes();
     </script>
 </body>
 </html>
