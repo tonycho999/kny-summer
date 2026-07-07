@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>예약 시스템</title>
+    <title>서서울호수공원 어린이 물놀이장 예약</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
         /* 메인 페이지 이미지 갤러리 스타일 */
@@ -22,10 +22,10 @@
             margin-bottom: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        /* 서브 이미지 그리드 */
+        /* 서브 이미지 그리드 (마지막 줄 비율을 위해 auto-fill 활용) */
         .gallery {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3칸으로 고정 */
+            grid-template-columns: repeat(3, 1fr); 
             gap: 15px;
         }
         .gallery img {
@@ -48,51 +48,55 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo"><a href="index.html">과천 물놀이장 예약 시스템</a></div>
-        <button class="menu-toggle" id="menuToggle">☰</button>
-        <nav id="navMenu">
-            <ul>
-                <li><a href="period.html">운영기간안내</a></li>
-                <li><a href="guide.html">이용안내</a></li>
-                <li><a href="reserve.html">예약하기</a></li>
-                <li><a href="check.html">예약조회/취소</a></li>
-                <li><a href="location.html">오시는길</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div id="header-placeholder"></div>
 
     <main class="container">
         <h1 style="text-align: center;">환영합니다!</h1>
-        <p class="intro-text">과천시 야외 물놀이장의 생생한 현장 모습을 확인하시고, 상단 메뉴를 통해 예약을 진행해 주세요.</p>
+        <p class="intro-text">서서울호수공원 어린이 물놀이장의 생생한 현장 모습을 확인하시고, 상단 메뉴를 통해 예약을 진행해 주세요.</p>
         
-        <!-- ⭐️ 첫 번째 사진을 메인으로 크게 배치 -->
-        <img src="public/images/과천 문원 체육공원 물놀이터 전경.png" alt="물놀이터 전경" class="main-image">
+        <img src="public/images/서서울호수공원8.jpg" alt="서서울호수공원 물놀이장 전경" class="main-image">
         
-        <!-- ⭐️ 나머지 6장의 사진을 3열 그리드로 꽉 차게 배치 -->
         <div class="gallery">
-            <img src="public/images/과천 문원체육공원 물놀이터.png" alt="물놀이터 시설 1">
-            <img src="public/images/과천 문원 물놀이터.png" alt="물놀이터 시설 2">
-            <img src="public/images/과천 문원 체육공원 물놀이터 사진.png" alt="물놀이터 시설 3">
-            <img src="public/images/과천 문원체육공원 바닥분수.png" alt="바닥분수">
-            <img src="public/images/과천 문원 물놀이터 남녀 탈의실.png" alt="남녀 탈의실">
-            <img src="public/images/과천 문원 체육공원 물놀이터 주차장.png" alt="주차장">
+            <img src="public/images/서서울호수공원7.jpg" alt="물놀이장 시설 7">
+            <img src="public/images/서서울호수공원6.jpg" alt="물놀이장 시설 6">
+            <img src="public/images/서서울호수공원5.jpg" alt="물놀이장 시설 5">
+            <img src="public/images/서서울호수공원4.webp" alt="물놀이장 시설 4">
+            <img src="public/images/서서울호수공원3.png" alt="물놀이장 시설 3">
+            <img src="public/images/서서울호수공원2.png" alt="물놀이장 시설 2">
+            <img src="public/images/서서울 호수공원1.png" alt="물놀이장 시설 1">
         </div>
     </main>
 
-    <footer>
-        <div class="company-name">케이앤와이 주식회사 (KNY Company)</div>
-        <div class="footer-info">
-            <span>대표 : 강경란</span> <span class="divider">|</span> 
-            <span>주소 : 서울 노원구 상계동 1320, 상가동 2층</span><br>
-            <span>사업자등록번호 : 388-81-01529</span> <span class="divider">|</span> 
-            <span>통신판매업신고 : 신고면제</span><br>
-            <span>전화 : 1566-4308</span> <span class="divider">|</span> 
-            <span>메일 : <a href="mailto:kny-company@naver.com">kny-company@naver.com</a></span>
-        </div>
-        <div>&copy; 2026 KNY Company. All Rights Reserved.</div>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <script src="js/main.js"></script>
+    
+    <script>
+        async function loadIncludes() {
+            try {
+                // 헤더 불러오기
+                const headerRes = await fetch('header.html');
+                document.getElementById('header-placeholder').innerHTML = await headerRes.text();
+                
+                // 푸터 불러오기
+                const footerRes = await fetch('footer.html');
+                document.getElementById('footer-placeholder').innerHTML = await footerRes.text();
+                
+                // 헤더를 불러온 직후에 모바일 메뉴 토글 이벤트 다시 연결
+                const menuToggle = document.getElementById('menuToggle');
+                const navMenu = document.getElementById('navMenu');
+                if (menuToggle && navMenu) {
+                    menuToggle.addEventListener('click', () => {
+                        navMenu.classList.toggle('active');
+                    });
+                }
+            } catch (error) {
+                console.error("헤더/푸터를 불러오는데 실패했습니다.", error);
+            }
+        }
+        
+        // 페이지 로드 시 즉시 실행
+        loadIncludes();
+    </script>
 </body>
 </html>
