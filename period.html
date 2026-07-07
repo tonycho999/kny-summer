@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>운영기간안내</title>
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <style>
+        .info-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+        .info-card h3 {
+            color: #0056b3;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #f0f2f5;
+            padding-bottom: 0.5rem;
+        }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+        .info-list li {
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+        .info-list li strong {
+            display: inline-block;
+            width: 80px;
+            color: #333;
+        }
+        .time-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .time-table th, .time-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .time-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html">과천 물놀이장 예약 시스템</a></div>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <nav id="navMenu">
+            <ul>
+                <li><a href="period.html">운영기간안내</a></li>
+                <li><a href="guide.html">이용안내</a></li>
+                <li><a href="reserve.html">예약하기</a></li>
+                <li><a href="check.html">예약조회/취소</a></li>
+                <li><a href="location.html">오시는길</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h2 style="text-align: center; margin-bottom: 2rem;">운영기간안내</h2>
+
+        <!-- 장소 1 안내 -->
+        <div class="info-card">
+            <h3>📍 장소 1 : 문원체육공원</h3>
+            <ul class="info-list">
+                <li><strong>운영기간</strong> 2026. 07. 11(토) ~ 2026. 08. 17(월)</li>
+                <li><strong>휴 장 일</strong> <span style="color:red; font-weight:bold;">매주 월요일</span> <br> (단, 8/17은 정상운영)</li>
+                <li><strong>수용인원</strong> 회차당 60명</li>
+            </ul>
+            <table class="time-table">
+                <thead>
+                    <tr><th>회차</th><th>운영시간</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1회차</td><td>11:00 ~ 11:50</td></tr>
+                    <tr><td>2회차</td><td>12:00 ~ 12:50</td></tr>
+                    <tr><td>3회차</td><td>14:00 ~ 14:50</td></tr>
+                    <tr><td>4회차</td><td>15:00 ~ 15:50</td></tr>
+                    <tr><td>5회차</td><td>16:00 ~ 16:50</td></tr>
+                    <tr><td>6회차</td><td>17:00 ~ 17:50</td></tr>
+                </tbody>
+            </table>
+        </div>        
+        <!-- 장소 2 안내 -->        
+        <div class="info-card">
+            <h3>📍 장소 2 : 갈현동 물놀이장 (주소 : 갈현동 846)</h3>
+            <ul class="info-list">
+                <li><strong>운영기간</strong> 2026. 07. 25(토) ~ 2026. 08. 17(월) ※개장식 : 9:40</li>
+                <li><strong>휴 장 일</strong> <span style="color:red; font-weight:bold;">매주 화요일</span></li>
+                <li><strong>수용인원</strong> 회차당 130명</li>
+            </ul>
+            <table class="time-table">
+                <thead>
+                    <tr><th>회차</th><th>운영시간</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1회차</td><td>10:00 ~ 11:00</td></tr>
+                    <tr><td>2회차</td><td>11:30 ~ 12:30</td></tr>
+                    <tr><td>3회차</td><td>13:00 ~ 14:00</td></tr>
+                    <tr><td>4회차</td><td>14:30 ~ 15:30</td></tr>
+                    <tr><td>5회차</td><td>16:00 ~ 17:00</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+    </main>
+
+    <footer>
+        <div class="company-name">케이앤와이 주식회사 (KNY Company)</div>
+        <div class="footer-info">
+            <span>대표 : 강경란</span> <span class="divider">|</span> 
+            <span>주소 : 서울 노원구 상계동 1320, 상가동 2층</span><br>
+            <span>사업자등록번호 : 388-81-01529</span> <span class="divider">|</span> 
+            <span>통신판매업신고 : 신고면제</span><br>
+            <span>전화 : 1566-4308</span> <span class="divider">|</span> 
+            <span>메일 : <a href="mailto:kny-company@naver.com">kny-company@naver.com</a></span>
+        </div>
+        <div>&copy; 2026 KNY Company. All Rights Reserved.</div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

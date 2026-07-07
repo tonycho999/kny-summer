@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예약 시스템</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* 메인 페이지 이미지 갤러리 스타일 */
+        .intro-text {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            color: #555;
+            text-align: center;
+        }
+        /* 메인 큰 이미지 */
+        .main-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        /* 서브 이미지 그리드 */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3칸으로 고정 */
+            gap: 15px;
+        }
+        .gallery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .gallery img:hover {
+            transform: scale(1.03);
+        }
+        /* 모바일에서는 2칸으로 */
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html">과천 물놀이장 예약 시스템</a></div>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <nav id="navMenu">
+            <ul>
+                <li><a href="period.html">운영기간안내</a></li>
+                <li><a href="guide.html">이용안내</a></li>
+                <li><a href="reserve.html">예약하기</a></li>
+                <li><a href="check.html">예약조회/취소</a></li>
+                <li><a href="location.html">오시는길</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 style="text-align: center;">환영합니다!</h1>
+        <p class="intro-text">과천시 야외 물놀이장의 생생한 현장 모습을 확인하시고, 상단 메뉴를 통해 예약을 진행해 주세요.</p>
+        
+        <!-- ⭐️ 첫 번째 사진을 메인으로 크게 배치 -->
+        <img src="public/images/과천 문원 체육공원 물놀이터 전경.png" alt="물놀이터 전경" class="main-image">
+        
+        <!-- ⭐️ 나머지 6장의 사진을 3열 그리드로 꽉 차게 배치 -->
+        <div class="gallery">
+            <img src="public/images/과천 문원체육공원 물놀이터.png" alt="물놀이터 시설 1">
+            <img src="public/images/과천 문원 물놀이터.png" alt="물놀이터 시설 2">
+            <img src="public/images/과천 문원 체육공원 물놀이터 사진.png" alt="물놀이터 시설 3">
+            <img src="public/images/과천 문원체육공원 바닥분수.png" alt="바닥분수">
+            <img src="public/images/과천 문원 물놀이터 남녀 탈의실.png" alt="남녀 탈의실">
+            <img src="public/images/과천 문원 체육공원 물놀이터 주차장.png" alt="주차장">
+        </div>
+    </main>
+
+    <footer>
+        <div class="company-name">케이앤와이 주식회사 (KNY Company)</div>
+        <div class="footer-info">
+            <span>대표 : 강경란</span> <span class="divider">|</span> 
+            <span>주소 : 서울 노원구 상계동 1320, 상가동 2층</span><br>
+            <span>사업자등록번호 : 388-81-01529</span> <span class="divider">|</span> 
+            <span>통신판매업신고 : 신고면제</span><br>
+            <span>전화 : 1566-4308</span> <span class="divider">|</span> 
+            <span>메일 : <a href="mailto:kny-company@naver.com">kny-company@naver.com</a></span>
+        </div>
+        <div>&copy; 2026 KNY Company. All Rights Reserved.</div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

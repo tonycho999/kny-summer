@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오시는길</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* 오시는길 전용 스타일 */
+        .location-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .location-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .location-card h3 {
+            color: #0056b3;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        .location-card p {
+            color: #555;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+        
+        /* 지도 이미지 컨테이너 (600x375 비율 고려) */
+        .map-image-container {
+            width: 100%;
+            max-width: 600px; /* PC에서 이미지가 너무 커지지 않도록 최대 넓이 고정 */
+            margin: 0 auto;   /* 이미지 가운데 정렬 */
+            position: relative;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .map-image-container:hover {
+            opacity: 0.85;
+            border-color: #0056b3;
+            box-shadow: 0 4px 10px rgba(0,86,179,0.2);
+        }
+        .map-image-container img {
+            width: 100%;       
+            height: auto;      
+            display: block;
+            aspect-ratio: 600 / 375; /* 브라우저에 명시적인 비율(1.6:1) 제공 */
+            object-fit: cover;
+        }
+        
+        /* '지도에서 보기' 오버레이 텍스트 */
+        .map-text {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html">과천 물놀이장 예약 시스템</a></div>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <nav id="navMenu">
+            <ul>
+                <li><a href="period.html">운영기간안내</a></li>
+                <li><a href="guide.html">이용안내</a></li>
+                <li><a href="reserve.html">예약하기</a></li>
+                <li><a href="check.html">예약조회/취소</a></li>
+                <li><a href="location.html">오시는길</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container location-wrap">
+        <h2 style="text-align: center; margin-bottom: 2rem;">오시는길</h2>
+
+        <!-- 장소 1 -->
+        <div class="location-card">
+            <h3>📍 문원동 물놀이장</h3>
+            <p>경기도 과천시 문원로 56 문원체육공원</p>
+            <!-- 이미지 경로 및 클릭 이벤트 -->
+            <div class="map-image-container" onclick="openNaverMap('경기도 과천시 문원로 56')">
+                <img src="public/images/map56.png" alt="잭과나무 물놀이터 지도">
+                <span class="map-text">🗺️ 네이버 지도에서 보기</span>
+            </div>
+        </div>
+        <!-- 장소 2 -->
+        <div class="location-card">
+            <h3>📍 갈현동 물놀이장</h3>
+            <p>경기도 과천시 갈현동 846</p>
+            <!-- 이미지 경로 및 클릭 이벤트 -->
+            <div class="map-image-container" onclick="openNaverMap('경기도 과천시 갈현동 846')">
+                <img src="public/images/map846.png" alt="갈현동 846 지도">
+                <span class="map-text">🗺️ 네이버 지도에서 보기</span>
+            </div>
+        </div>
+
+
+
+    </main>
+    <footer>
+        <div class="company-name">케이앤와이 주식회사 (KNY Company)</div>
+        <div class="footer-info">
+            <span>대표 : 강경란</span> <span class="divider">|</span> 
+            <span>주소 : 서울 노원구 상계동 1320, 상가동 2층</span><br>
+            <span>사업자등록번호 : 388-81-01529</span> <span class="divider">|</span> 
+            <span>통신판매업신고 : 신고면제</span><br>
+            <span>전화 : 1566-4308</span> <span class="divider">|</span> 
+            <span>메일 : <a href="mailto:kny-company@naver.com">kny-company@naver.com</a></span>
+        </div>
+        <div>&copy; 2026 KNY Company. All Rights Reserved.</div>
+    </footer>
+    
+    <script src="js/main.js"></script>
+    <script>
+        // PC/모바일 구분하여 네이버 지도 여는 함수
+        function openNaverMap(query) {
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            const encodedQuery = encodeURIComponent(query);
+
+            if (isMobile) {
+                const appUrl = `nmap://search?query=${encodedQuery}&appname=reservation_system`;
+                const webUrl = `https://m.map.naver.com/search2/search.naver?query=${encodedQuery}`;
+                
+                setTimeout(() => {
+                    window.location.href = webUrl;
+                }, 500);
+                window.location.href = appUrl;
+            } else {
+                const pcUrl = `https://map.naver.com/v5/search/${encodedQuery}`;
+                window.open(pcUrl, '_blank');
+            }
+        }
+    </script>
+</body>
+</html>
