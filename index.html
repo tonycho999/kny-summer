@@ -18,12 +18,13 @@
         .top-images {
             display: flex;
             gap: 15px;
-            justify-content: center;
-            margin-bottom: 2rem;
+            width: 100%;
+            margin-bottom: 15px; /* 아래 갤러리와의 간격 맞춤 */
         }
         .top-images img {
-            flex: 1 1 0; /* 동일 비율로 확대/축소 */
-            max-height: 350px; /* 큰 이미지 높이 */
+            flex: 1; /* 가로폭을 남김없이 반반씩 꽉 채움 */
+            width: 100%;
+            height: 350px; /* 첫 줄 이미지 높이 고정 */
             object-fit: cover;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -38,10 +39,11 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr); 
             gap: 15px;
+            width: 100%; /* 전체 폭 100% 일치 */
         }
         .gallery img {
             width: 100%;
-            height: 200px;
+            height: 280px; /* 200px -> 280px로 키워 더 크고 시원하게 보이도록 수정 */
             object-fit: cover;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -55,15 +57,17 @@
         @media (max-width: 768px) {
             .top-images {
                 flex-direction: column;
-                align-items: center;
                 gap: 10px;
             }
             .top-images img {
-                width: 100%;
-                flex: 0 0 auto;
+                height: 250px;
             }
             .gallery {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .gallery img {
+                height: 200px;
             }
         }
     </style>
