@@ -13,16 +13,27 @@
             color: #555;
             text-align: center;
         }
-        /* 메인 큰 이미지 */
-        .main-image {
-            width: 100%;
-            max-height: 400px;
+
+        /* 첫 번째 줄 (큰 이미지 2장) */
+        .top-images {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        .top-images img {
+            flex: 1 1 0; /* 동일 비율로 확대/축소 */
+            max-height: 350px; /* 큰 이미지 높이 */
             object-fit: cover;
             border-radius: 8px;
-            margin-bottom: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
         }
-        /* 서브 이미지 그리드 (마지막 줄 비율을 위해 auto-fill 활용) */
+        .top-images img:hover {
+            transform: scale(1.02);
+        }
+
+        /* 나머지 줄 이미지 그리드 (3칸) */
         .gallery {
             display: grid;
             grid-template-columns: repeat(3, 1fr); 
@@ -39,8 +50,18 @@
         .gallery img:hover {
             transform: scale(1.03);
         }
+
         /* 모바일에서는 2칸으로 */
         @media (max-width: 768px) {
+            .top-images {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            .top-images img {
+                width: 100%;
+                flex: 0 0 auto;
+            }
             .gallery {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -54,16 +75,19 @@
         <h1 style="text-align: center;">환영합니다!</h1>
         <p class="intro-text">서서울호수공원 어린이 물놀이장의 생생한 현장 모습을 확인하시고, 상단 메뉴를 통해 예약을 진행해 주세요.</p>
         
-        <img src="public/images/서서울호수공원8.jpg" alt="서서울호수공원 물놀이장 전경" class="main-image">
+        <div class="top-images">
+            <img src="public/images/서서울호수공원4.webp" alt="물놀이장 시설 4">
+            <img src="public/images/서서울호수공원7.jpg" alt="물놀이장 시설 7">
+        </div>
         
         <div class="gallery">
-            <img src="public/images/서서울호수공원7.jpg" alt="물놀이장 시설 7">
-            <img src="public/images/서서울호수공원6.jpg" alt="물놀이장 시설 6">
-            <img src="public/images/서서울호수공원5.jpg" alt="물놀이장 시설 5">
-            <img src="public/images/서서울호수공원4.webp" alt="물놀이장 시설 4">
-            <img src="public/images/서서울호수공원3.png" alt="물놀이장 시설 3">
-            <img src="public/images/서서울호수공원2.png" alt="물놀이장 시설 2">
             <img src="public/images/서서울 호수공원1.png" alt="물놀이장 시설 1">
+            <img src="public/images/서서울호수공원3.png" alt="물놀이장 시설 3">
+            <img src="public/images/서서울호수공원8.jpg" alt="서서울호수공원 물놀이장 전경">
+            
+            <img src="public/images/서서울호수공원2.png" alt="물놀이장 시설 2">
+            <img src="public/images/서서울호수공원5.jpg" alt="물놀이장 시설 5">
+            <img src="public/images/서서울호수공원6.jpg" alt="물놀이장 시설 6">
         </div>
     </main>
 
