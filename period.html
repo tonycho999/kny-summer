@@ -6,16 +6,14 @@
     <title>운영기간안내 - 서서울호수공원 어린이 물놀이장</title>
     <link rel="stylesheet" href="css/style.css?v=2">
     <style>
-        /* ⭐️ 배경 이미지를 위한 body 스타일 추가 */
+        /* 배경 이미지를 위한 body 스타일 */
         body {
-            /* 배경 이미지 설정 및 고정 */
             background-image: url('public/images/서서울호수공원2.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
             
-            /* 가상 요소를 이용해 배경에 흰색 반투명 오버레이 씌우기 */
             position: relative;
             min-height: 100vh;
         }
@@ -24,17 +22,19 @@
             content: "";
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(255, 255, 255, 0.85); /* 흰색 투명도 85% */
-            z-index: -1; /* 내용을 가리지 않도록 맨 뒤로 보냄 */
+            /* ⭐️ 수정됨: 흰색 투명도를 85% -> 65%로 낮춰서 배경 이미지가 잘 보이게 함 */
+            background-color: rgba(255, 255, 255, 0.65); 
+            z-index: -1; 
         }
 
         .info-card {
-            background: rgba(255, 255, 255, 0.95); /* 카드는 살짝 더 불투명하게 */
+            /* ⭐️ 카드는 글씨가 잘 보여야 하므로 투명도 90% 유지 */
+            background: rgba(255, 255, 255, 0.90); 
             border: 1px solid #ddd;
             border-radius: 8px;
             padding: 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* 그림자 강조 */
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15); 
             text-align: left;
         }
         .info-card h3 {
