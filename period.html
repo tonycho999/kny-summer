@@ -6,13 +6,35 @@
     <title>운영기간안내 - 서서울호수공원 어린이 물놀이장</title>
     <link rel="stylesheet" href="css/style.css?v=2">
     <style>
+        /* ⭐️ 배경 이미지를 위한 body 스타일 추가 */
+        body {
+            /* 배경 이미지 설정 및 고정 */
+            background-image: url('public/images/서서울호수공원2.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            
+            /* 가상 요소를 이용해 배경에 흰색 반투명 오버레이 씌우기 */
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255, 255, 255, 0.85); /* 흰색 투명도 85% */
+            z-index: -1; /* 내용을 가리지 않도록 맨 뒤로 보냄 */
+        }
+
         .info-card {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.95); /* 카드는 살짝 더 불투명하게 */
             border: 1px solid #ddd;
             border-radius: 8px;
             padding: 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* 그림자 강조 */
             text-align: left;
         }
         .info-card h3 {
@@ -42,6 +64,7 @@
             border-collapse: collapse;
             text-align: center;
             margin-top: 1rem;
+            background: #fff; /* 표 배경은 완벽한 흰색으로 가독성 유지 */
         }
         .time-table th, .time-table td {
             border: 1px solid #ddd;
@@ -62,7 +85,7 @@
     <div id="header-placeholder"></div>
 
     <main class="container">
-        <h2 style="text-align: center; margin-bottom: 2rem;">운영기간 안내</h2>
+        <h2 style="text-align: center; margin-bottom: 2rem; margin-top: 1rem; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">운영기간 안내</h2>
 
         <div class="info-card">
             <h3>📍 서서울호수공원 문화테크광장</h3>
