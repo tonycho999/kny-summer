@@ -7,28 +7,28 @@
     <link rel="stylesheet" href="css/style.css?v=2">
     <style>
         body {
-    background-image: url('public/images/서서울호수공원2.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    position: relative;
-    min-height: 100vh;
-}
-body::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(255, 255, 255, 0.65); 
-    z-index: -1; 
-}
+            background-image: url('public/images/서서울호수공원2.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            position: relative;
+            min-height: 100vh;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255, 255, 255, 0.65); 
+            z-index: -1; 
+        }
         .guide-card {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.90);
             border: 1px solid #ddd;
             border-radius: 8px;
             padding: 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
             text-align: left;
         }
         .guide-card h3 {
@@ -54,6 +54,7 @@ body::before {
         .highlight-red {
             color: #d9534f;
             font-weight: bold;
+            font-size: 1.1rem;
         }
     </style>
 </head>
@@ -61,7 +62,7 @@ body::before {
     <div id="header-placeholder"></div>
 
     <main class="container">
-        <h2 style="text-align: center; margin-bottom: 2rem;">이용안내 및 유의사항</h2>
+        <h2 style="text-align: center; margin-bottom: 2rem; margin-top: 1rem; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">이용안내 및 유의사항</h2>
 
         <div class="guide-card">
             <h3>✅ 예약 및 입장 안내</h3>
@@ -79,6 +80,8 @@ body::before {
             <ul class="guide-list">
                 <li>안전하고 청결한 수질 관리를 위해 <span class="highlight">수영복, 수영모(캡모자 가능), 아쿠아슈즈</span>를 반드시 착용해 주세요.</li>
                 <li><span class="highlight-red">36개월 미만 영유아는 방수 기저귀 필수 착용</span> 바랍니다.</li>
+                <!-- ⭐️ 물총 반입 금지 강조 안내 추가 -->
+                <li style="background-color: #fff3f3; padding: 10px; border-radius: 5px; border-left: 4px solid #d9534f;">안전 사고 예방 및 다른 이용객의 불편을 막기 위해 <span class="highlight-red">물총 반입 및 사용은 절대 불가</span>합니다. 적극적인 협조 부탁드립니다.</li>
                 <li>12세 이하 어린이는 사고 예방을 위해 반드시 보호자가 동반하여 입장 및 이용해야 합니다.</li>
                 <li>공원 이용 수칙 상 <span class="highlight-red">배달 및 취사가 금지</span>되며, 매점은 운영하지 않습니다. (도시락 등 간단한 음식은 휴게 공간에서만 섭취 가능)</li>
                 <li>공원 내 <span class="highlight-red">음주 및 흡연은 절대 불가</span>합니다.</li>
