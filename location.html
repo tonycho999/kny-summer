@@ -6,6 +6,22 @@
     <title>오시는길 - 서서울호수공원 어린이 물놀이장</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
+        body {
+    background-image: url('public/images/서서울호수공원2.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    position: relative;
+    min-height: 100vh;
+}
+body::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255, 255, 255, 0.65); 
+    z-index: -1; 
+}
         /* 오시는길 전용 스타일 */
         .location-wrap {
             max-width: 800px;
