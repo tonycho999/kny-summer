@@ -50,8 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // === ⭐️ [임시] 주차별 예약 오픈 스케줄 반영 로직 ===
-    // 현재 정책 미정으로, 기본값인 '이용일 하루 전 19:00 오픈' 로직을 임시로 적용해 두었습니다.
+    // === ⭐️ 주차별 예약 오픈 스케줄 반영 로직 ===
     function isSelectable(dateStr, rule) {
         const [y, m, d] = dateStr.split('-').map(Number);
         const targetDate = new Date(y, m - 1, d, 0, 0, 0);
@@ -65,12 +64,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (targetDate < start || targetDate > end) return false;
         if (!rule.exceptions?.includes(dateStr) && rule.closedDays.includes(targetDate.getDay())) return false;
 
-        // 2. 예약 오픈 시간 설정 (임시: 하루 전 19:00)
+        // 2. ⭐️ 예약 오픈 시간 설정 (하루 전 20:00)
         const openTime = new Date(targetDate);
         openTime.setDate(openTime.getDate() - 1); // 하루 전
-        openTime.setHours(19, 0, 0, 0);           // 19시 정각
+        openTime.setHours(20, 0, 0, 0);           // 20시 정각
+        
+        // 3. ⭐️ 예약 마감 시간 설정 (하루 전 24:00 == 당일 00:00)
+        // 24:00은 코드상 다음 날(당일) 0시 0분과 동일하게 처리합니다.
+        const closeTime = new Date(targetDate);
+        closeTime.setHours(0, 0, 0, 0);
 
-        // 3. 현재 한국 시간(KST) 구하기
+        // 4. 현재 한국 시간(KST) 구하기
         const formatter = new Intl.DateTimeFormat('en-US', {
             timeZone: 'Asia/Seoul',
             year: 'numeric', month: '2-digit', day: '2-digit',
@@ -81,10 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
         parts.forEach(p => kst[p.type] = p.value);
         const currentKst = new Date(kst.year, kst.month - 1, kst.day, kst.hour, kst.minute, kst.second);
         
-        // 4. 아직 지정된 오픈 시간 전이라면 예약 불가
-        if (currentKst < openTime) return false;
+        // 5. ⭐️ 아직 지정된 오픈 시간(20:00) 전이거나, 예약 가능 시간(당일 00:00)을 넘겼다면 예약 불가
+        if (currentKst < openTime || currentKst >= closeTime) return false;
 
-        // 5. 이미 지나간 과거 날짜 예약 불가
+        // 6. 이미 지나간 과거 날짜 예약 불가
         const currentOnlyDate = new Date(kst.year, kst.month - 1, kst.day, 0, 0, 0);
         if (currentOnlyDate > targetDate) return false;
 
@@ -95,9 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
         calendarBody.innerHTML = '';
         currentMonthDisplay.textContent = `${year}년 ${month}월`;
         
+        // ⭐️ 달력 하단 안내 문구 수정 (20:00 ~ 24:00)
         const stepDesc = document.querySelector('.calendar-table').nextElementSibling;
         if (stepDesc) {
-            stepDesc.innerHTML = `원하시는 날짜를 선택하세요.<br><span style="color:#0056b3; font-weight:bold; font-size:0.9em;">(⏰ 예약 오픈: 이용 전날 19:00 ~ 23:00)</span>`;
+            stepDesc.innerHTML = `원하시는 날짜를 선택하세요.<br><span style="color:#0056b3; font-weight:bold; font-size:0.9em;">(⏰ 예약 오픈: 이용 전날 20:00 ~ 24:00)</span>`;
         }
         
         const firstDay = new Date(year, month - 1, 1).getDay();
@@ -120,7 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         cell.addEventListener('click', () => handleDateClick(cell, dateStr));
                     } else {
                         cell.classList.add('disabled');
-                        cell.title = '아직 예약이 오픈되지 않았거나 예약 불가한 날짜(휴장일 등)입니다.';
+                        // ⭐️ 마우스 오버 툴팁 안내도 수정
+                        cell.title = '예약 가능 시간이 아닙니다.\n(오픈 시간: 이용 전날 20:00 ~ 자정까지)';
                     }
                     date++;
                 }
@@ -197,6 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnMinus = document.getElementById('btnMinus');
     const btnPlus = document.getElementById('btnPlus');
     const peopleInput = document.getElementById('people');
+
     if(btnMinus && btnPlus) {
         btnMinus.addEventListener('click', () => { let val = parseInt(peopleInput.value); if (val > 1) peopleInput.value = val - 1; });
         btnPlus.addEventListener('click', () => { let val = parseInt(peopleInput.value); if (val < 5) peopleInput.value = val + 1; });
@@ -263,7 +270,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
                     formContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
                 } else {
                     alert(`예약 처리 중 오류가 발생했습니다: \n${result.message || result.error || '알 수 없는 오류'}`);
                     submitBtn.textContent = '예약 신청하기';
