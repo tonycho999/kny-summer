@@ -1,13 +1,18 @@
 document.addEventListener('DOMContentLoaded', async () => {
+
     const reservationList = document.getElementById('reservationList');
     
+    // ⭐️ 요약 박스 엘리먼트 (인원수 표시용)
+    const totalBookedEl = document.getElementById('totalBookedCount');
+    const totalCanceledEl = document.getElementById('totalCanceledCount');
+
     // 필터 엘리먼트들
     const searchInput = document.getElementById('searchInput');
     const filterLocation = document.getElementById('filterLocation');
     const filterDate = document.getElementById('filterDate');
     const filterTime = document.getElementById('filterTime');
     
-    // ⭐️ 새 서버 주소 적용
+    // ⭐️ 새 서버 주소 유지
     const GET_URL = 'https://kny-summerdb.tonycho999.workers.dev/api/reservations';
     const UPDATE_URL = 'https://kny-summerdb.tonycho999.workers.dev/api/update-status';
 
@@ -25,19 +30,34 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function renderTable(dataToRender) {
         reservationList.innerHTML = ''; 
+        
+        // ⭐️ 1. 인원 합산용 변수 초기화
+        let sumBooked = 0;
+        let sumCanceled = 0;
 
         if (dataToRender.length === 0) {
             reservationList.innerHTML = '<tr><td colspan="6">일치하는 예약 내역이 없습니다.</td></tr>';
+            // 데이터가 없으면 인원수도 0으로 업데이트
+            if(totalBookedEl) totalBookedEl.textContent = '0';
+            if(totalCanceledEl) totalCanceledEl.textContent = '0';
             return;
         }
 
         dataToRender.forEach(item => {
-            const row = document.createElement('tr');
             const currentStatus = item.status || '예약대기';
+            
+            // ⭐️ 2. 상태에 따라 인원수 더하기
+            const peopleCount = parseInt(item.people) || 0;
+            if (currentStatus === '예약취소') {
+                sumCanceled += peopleCount;
+            } else {
+                sumBooked += peopleCount;
+            }
 
-            // 단일 장소로 뱃지 통일
+            const row = document.createElement('tr');
+            
+            // 단일 장소 뱃지
             const locationBadge = `<span style="background:#0056b3; color:white; padding:3px 6px; border-radius:3px; font-size:0.8em; margin-bottom:5px; display:inline-block; font-weight:bold;">${item.location}</span><br>`;
-
             const dateTimeStr = `${locationBadge}<strong>${item.date}</strong><br><span style="font-size:0.85em; color:#666;">${item.time_slot}</span>`;
             const userInfoStr = `<strong>${item.name}</strong> (${item.phone})<br><span style="font-size:0.85em; color:#666;">${item.email} / ${item.birthdate}</span>`;
 
@@ -57,6 +77,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             `;
             reservationList.appendChild(row);
         });
+
+        // ⭐️ 3. 계산된 총 인원수를 요약 박스에 반영
+        if(totalBookedEl) totalBookedEl.textContent = sumBooked;
+        if(totalCanceledEl) totalCanceledEl.textContent = sumCanceled;
+
         attachSelectListeners();
     }
 
@@ -77,8 +102,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const itemToUpdate = allReservations.find(item => item.id == reservationId);
                         if (itemToUpdate) itemToUpdate.status = newStatus;
                         
-                        e.target.style.cssText = getStatusStyle(newStatus);
-                        alert('상태가 변경되었습니다.');
+                        // ⭐️ 상태 변경 시 화면 전체를 다시 그려서 상단 요약 인원도 실시간 갱신되도록 함
+                        applyFilters();
+                        
                     } else {
                         alert('상태 변경에 실패했습니다.');
                         location.reload(); 
@@ -105,10 +131,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
             const matchLoc = loc === "" || item.location.includes(loc);
             const matchDate = date === "" || item.date === date;
+            
+            // ⭐️ 시간 필터 매칭 로직 (선택한 필터 텍스트가 item.time_slot 문자열 안에 포함되는지 검사)
             const matchTime = time === "" || item.time_slot.includes(time);
 
             return matchKeyword && matchLoc && matchDate && matchTime;
         });
+
         renderTable(filteredData);
     }
 
