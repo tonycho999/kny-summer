@@ -6,11 +6,11 @@
     <title>관리자 - 예약 관리</title>
     <link rel="stylesheet" href="../css/admin.css">
     <style>
-        /* 검색 영역 스타일 간단 추가 */
+        /* 검색 영역 스타일 */
         .search-area {
             margin: 1.5rem 0;
             display: flex;
-            flex-wrap: wrap; /* 여러 줄 허용 */
+            flex-wrap: wrap; 
             gap: 10px;
             justify-content: flex-end;
             align-items: center;
@@ -24,6 +24,27 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+
+        /* ⭐️ 새로 추가된 요약(Summary) 박스 스타일 */
+        .summary-box {
+            display: flex;
+            gap: 20px;
+            background: #eef2f5;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 5px solid #0056b3;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .summary-item span.label { font-weight: bold; color: #555; }
+        .summary-item span.value { font-weight: 800; font-size: 1.3rem; }
+        .summary-item.total .value { color: #0056b3; }    /* 확정 인원 파란색 */
+        .summary-item.cancel .value { color: #d9534f; }   /* 취소 인원 빨간색 */
     </style>
 </head>
 <body>
@@ -39,16 +60,26 @@
             <select id="filterLocation">
                 <option value="">서서울 호수공원</option>
             </select>
-
             <input type="date" id="filterDate">
             
             <select id="filterTime">
                 <option value="">모든 회차</option>
-                <option value="1회차">1회차</option>
-                <option value="2회차">2회차</option>
+                <option value="1부">1부 (10:00~13:00)</option>
+                <option value="2부">2부 (14:00~17:00)</option>
             </select>
-
             <input type="text" id="searchInput" placeholder="이름, 연락처 또는 예약번호 검색" style="width:250px;">
+        </div>
+
+        <!-- ⭐️ 예약 인원 실시간 요약 박스 추가 -->
+        <div class="summary-box">
+            <div class="summary-item total">
+                <span class="label">✅ 확정 예약 인원 (취소 제외) :</span>
+                <span class="value" id="totalBookedCount">0</span>명
+            </div>
+            <div class="summary-item cancel">
+                <span class="label">❌ 취소된 인원 :</span>
+                <span class="value" id="totalCanceledCount">0</span>명
+            </div>
         </div>
 
         <table class="admin-table">
@@ -67,7 +98,6 @@
             </tbody>
         </table>
     </main>
-
     <script src="../js/admin.js"></script>
 </body>
 </html>
