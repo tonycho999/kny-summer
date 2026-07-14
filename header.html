@@ -2,25 +2,43 @@
     /* ⭐️ 구글 폰트 불러오기 (귀엽고 친근한 폰트) */
     @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
     
-    /* 헤더 전체 배경색 (시원한 호수 블루 그라데이션) */
+    /* ⭐️ 헤더 전체 배경색 (로고 배경색과 동일한 연두/초록색 계열로 변경) */
     header {
-        background: linear-gradient(135deg, #0082c8, #005c97) !important;
+        background-color: #8CC63F !important; /* 양천구 로고 배경색과 일치 (필요시 미세조정) */
         border-bottom: none !important;
-        box-shadow: 0 4px 10px rgba(0, 92, 151, 0.3) !important;
+        box-shadow: 0 4px 10px rgba(140, 198, 63, 0.3) !important;
+        padding: 0.5rem 2rem !important; /* 로고 이미지가 들어가므로 상하 여백 살짝 조절 */
+    }
+    
+    /* 로고 컨테이너 (이미지와 텍스트를 위아래로 배치) */
+    header .logo {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    /* ⭐️ 추가된 로고 이미지 스타일 */
+    header .logo img {
+        height: 30px; /* 로고 이미지 크기 (너무 크지 않게 조절) */
+        width: auto;
+        object-fit: contain;
     }
     
     /* 메인 로고 타이틀 폰트 및 스타일 변경 */
     header .logo a {
         font-family: 'Jua', sans-serif !important;
         color: #ffffff !important;
-        font-size: 1.8rem !important;
+        font-size: 1.6rem !important; /* 이미지와 함께 배치되므로 살짝 폰트 크기 줄임 */
         letter-spacing: 1px;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.15);
+        text-decoration: none;
+        line-height: 1.2;
     }
     
     /* 상단 메뉴 글자색 (흰색) 및 애니메이션 */
     header #navMenu ul li a {
-        color: #f0f8ff !important;
+        color: #ffffff !important;
         font-weight: bold !important;
         transition: all 0.3s ease;
     }
@@ -40,13 +58,17 @@
     /* 모바일에서 메뉴 열렸을 때 배경색 자연스럽게 */
     @media (max-width: 768px) {
         header #navMenu.active {
-            background-color: #006baf !important;
+            background-color: #7ab332 !important; /* 모바일 메뉴 오픈 시 약간 더 진한 초록색 */
         }
     }
 </style>
 
 <header>
-    <div class="logo"><a href="index.html">서서울호수공원 어린이 물놀이장</a></div>
+    <div class="logo">
+        <!-- ⭐️ 텍스트 상단에 로고 이미지 추가 -->
+        <img src="public/images/yangchungu_logo.png" alt="양천구 로고">
+        <a href="index.html">서서울호수공원 어린이 물놀이장</a>
+    </div>
     <button class="menu-toggle" id="menuToggle">☰</button>
     <nav id="navMenu">
         <ul>
