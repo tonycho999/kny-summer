@@ -1,104 +1,100 @@
 <style>
-
-
     @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
   
-
     header {
-
         background: linear-gradient(135deg, #0082c8, #005c97) !important;
-
         border-bottom: none !important;
-
         box-shadow: 0 4px 10px rgba(0, 92, 151, 0.3) !important;
-
+        padding: 0.5rem 2rem !important; /* 상하 여백 조절 */
     }
 
+    /* 로고 컨테이너 (위아래 배치) */
+    header .logo {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px; 
+    }
+
+    /* ⭐️ 로고 이미지 크기만 대폭 축소 (배경/색상 그대로) */
+    header .logo img {
+        height: 25px !important; /* 이미지 높이를 25px로 설정 */
+        width: auto !important;
+        object-fit: contain;
+    }
 
     header .logo a {
-
         font-family: 'Jua', sans-serif !important;
-
         color: #ffffff !important;
-
-        font-size: 1.8rem !important;
-
+        font-size: 1.5rem !important; /* 글씨 크기 소폭 조절 */
         letter-spacing: 1px;
-
         text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-
+        text-decoration: none;
+        line-height: 1.2;
     }
-
     
-
     header #navMenu ul li a {
-
         color: #f0f8ff !important;
-
         font-weight: bold !important;
-
         transition: all 0.3s ease;
-
     }
-
 
     header #navMenu ul li a:hover {
-
         color: #ffeaa7 !important; 
-
         text-decoration: none;
-
         transform: scale(1.05);
-
     }
-
     
-
     header .menu-toggle {
-
         color: #ffffff !important;
-
+        background: transparent;
+        border: none;
+        font-size: 1.8rem;
+        cursor: pointer;
     }
-
 
     @media (max-width: 768px) {
-
-        header #navMenu.active {
-
-            background-color: #006baf !important;
-
+        header #navMenu {
+            display: none;
+            width: 100%;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            z-index: 1000;
         }
-
+        header #navMenu.active {
+            display: block;
+            background-color: #006baf !important;
+        }
+        header #navMenu ul {
+            flex-direction: column;
+            padding: 0;
+            margin: 0;
+        }
+        header #navMenu ul li {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        header #navMenu ul li a {
+            display: block;
+            padding: 15px 20px;
+        }
     }
-
 </style>
 
 <header>
-
     <div class="logo">
-        <!-- ⭐️ 텍스트 상단에 로고 이미지 추가 -->
+        <!-- 텍스트 상단에 로고 이미지 추가 -->
         <img src="public/images/yangchungu_logo.png" alt="양천구 로고">
         <a href="index.html">서서울호수공원 어린이 물놀이장</a>
     </div>
-
     <button class="menu-toggle" id="menuToggle">☰</button>
-
     <nav id="navMenu">
-
         <ul>
-
             <li><a href="period.html">운영기간안내</a></li>
-
             <li><a href="guide.html">이용안내</a></li>
-
             <li><a href="reserve.html">예약하기</a></li>
-
             <li><a href="check.html">예약조회/취소</a></li>
-
             <li><a href="location.html">오시는길</a></li>
-
         </ul>
-
     </nav>
-
-</header>\
+</header>
