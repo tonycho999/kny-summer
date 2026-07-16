@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/style.css">
     <style>
         /* 메인 페이지 이미지 갤러리 스타일 */
-
         body {
             background-image: url('public/images/서서울호수공원2.png');
             background-size: cover;
@@ -24,14 +23,13 @@
             background-color: rgba(255, 255, 255, 0.65); 
             z-index: -1; 
         }
-
         .intro-text {
             margin-bottom: 2rem;
             font-size: 1.1rem;
             color: #555;
             text-align: center;
         }
-
+        
         /* ⭐️ 갤러리 래퍼 (전체 중앙 정렬 및 폭 고정) */
         .gallery-wrapper {
             width: 100%;
@@ -53,7 +51,7 @@
         }
         .grid-row-2 img {
             width: 100%;
-            height: 380px; /* 2장일 때 시원하게 보이도록 높이 지정 */
+            height: 380px; 
             object-fit: cover;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -73,7 +71,7 @@
         }
         .grid-row-3 img {
             width: 100%;
-            height: 280px; /* 3장일 때 비율에 맞게 높이 지정 */
+            height: 280px; 
             object-fit: cover;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -84,22 +82,151 @@
             z-index: 1;
         }
 
-        /* 모바일 반응형 대응 */
+        /* 모바일 반응형 대응 (갤러리) */
         @media (max-width: 768px) {
             .grid-row-2, .grid-row-3 {
-                grid-template-columns: repeat(2, 1fr); /* 태블릿에서는 모두 2칸으로 */
+                grid-template-columns: repeat(2, 1fr); 
             }
             .grid-row-2 img, .grid-row-3 img {
                 height: 220px;
             }
         }
-
         @media (max-width: 480px) {
             .grid-row-2, .grid-row-3 {
-                grid-template-columns: 1fr; /* 좁은 폰 화면에서는 1칸으로 */
+                grid-template-columns: 1fr; 
             }
             .grid-row-2 img, .grid-row-3 img {
                 height: 250px;
+            }
+        }
+
+        /* ⭐️ 모바일 전용 줄바꿈 클래스 */
+        .mobile-br {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .mobile-br {
+                display: block;
+            }
+        }
+
+        /* ⭐️ 이벤트 팝업 스타일 (모바일 기본) */
+        #eventPopup {
+            display: none; 
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px; 
+            background-color: #fff;
+            border-radius: 16px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            z-index: 9999;
+            overflow: hidden;
+            border: 4px solid #0056b3;
+        }
+        
+        #popupOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 9998;
+        }
+
+        .popup-header {
+            background-color: #0056b3;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 1.2rem; 
+            font-weight: bold;
+        }
+
+        .popup-body {
+            padding: 25px 20px;
+            text-align: center;
+            line-height: 1.7;
+        }
+
+        .popup-body h3 {
+            color: #d9534f;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .popup-body p {
+            margin: 10px 0;
+            color: #333;
+            font-weight: bold;
+            font-size: 1.05rem;
+        }
+
+        /* 하단 파란색 안내 문구 */
+        .popup-info {
+            font-size: 1rem !important; 
+            color: #0056b3 !important; 
+            margin-top: 20px !important;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+
+        .popup-footer {
+            background-color: #f8f9fa;
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+
+        .popup-btn {
+            padding: 15px;
+            border: none;
+            background: none;
+            font-size: 1.05rem;
+            cursor: pointer;
+            font-weight: bold;
+            color: #555;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-today {
+            flex: 7; 
+            border-right: 1px solid #ddd;
+        }
+        
+        .btn-close {
+            flex: 3; 
+        }
+
+        .popup-btn:hover { background-color: #e2e2e2; }
+
+        /* ⭐️ PC 화면용 팝업 확대 스타일 */
+        @media (min-width: 769px) {
+            #eventPopup {
+                max-width: 600px; 
+                border-radius: 20px;
+            }
+            .popup-header {
+                padding: 20px;
+                font-size: 1.6rem; 
+            }
+            .popup-body {
+                padding: 40px 30px;
+            }
+            .popup-body h3 {
+                font-size: 1.5rem;
+            }
+            .popup-body p {
+                font-size: 1.3rem;
+            }
+            .popup-info {
+                font-size: 1.2rem !important;
+                margin-top: 25px !important;
+            }
+            .popup-btn {
+                padding: 20px;
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -121,7 +248,6 @@
                 <img src="public/images/서서울 호수공원1.png" alt="물놀이장 시설 1">
                 <img src="public/images/서서울호수공원8.jpg" alt="서서울호수공원 물놀이장 전경">
             </div>
-
             <div class="grid-row-3">
                 <img src="public/images/서서울호수공원3.png" alt="물놀이장 시설 2">
                 <img src="public/images/서서울호수공원5.jpg" alt="물놀이장 시설 5">
@@ -130,21 +256,41 @@
         </div>
     </main>
 
+    <!-- ⭐️ 이벤트 팝업창 HTML 구조 -->
+    <div id="popupOverlay"></div>
+    <div id="eventPopup">
+        <div class="popup-header">
+            📢 서서울호수공원 물놀이장 예약 안내
+        </div>
+        <div class="popup-body">   
+            <p style="color: #555; font-weight: normal;">
+                예약은 해당 이용일의 <span style="color:#d9534f; font-weight:bold;">전날 20시(오후 8시)</span>부터<br class="mobile-br">
+                자정(24시)까지만 선착순으로 진행됩니다.
+            </p>
+            <p class="popup-info">
+                예) 7월 25일 이용을 원하실 경우,<br class="mobile-br">
+                7월 24일 20시 정각부터 예약 가능!
+            </p>
+        </div>
+        <div class="popup-footer">
+            <button class="popup-btn btn-today" onclick="closePopup('today')">오늘 하루 보지않기</button>
+            <button class="popup-btn btn-close" onclick="closePopup('close')">닫기</button>
+        </div>
+    </div>
+
     <div id="footer-placeholder"></div>
 
     <script src="js/main.js"></script>
+
     <script>
         async function loadIncludes() {
             try {
-                // 헤더 불러오기
                 const headerRes = await fetch('header.html');
                 document.getElementById('header-placeholder').innerHTML = await headerRes.text();
                 
-                // 푸터 불러오기
                 const footerRes = await fetch('footer.html');
                 document.getElementById('footer-placeholder').innerHTML = await footerRes.text();
                 
-                // 모바일 메뉴 토글 이벤트 바인딩
                 const menuToggle = document.getElementById('menuToggle');
                 const navMenu = document.getElementById('navMenu');
                 if (menuToggle && navMenu) {
@@ -158,6 +304,45 @@
         }
         
         loadIncludes();
+
+        // ⭐️ 팝업 제어 로직 (쿠키 기반 페이지 간 공유)
+        document.addEventListener('DOMContentLoaded', () => {
+            const popup = document.getElementById('eventPopup');
+            const overlay = document.getElementById('popupOverlay');
+
+            // 팝업 노출 마감 시간 (필요시 날짜 수정)
+            const popupDeadline = new Date('2026-08-25T10:00:00');
+            const now = new Date();
+
+            // 쿠키 읽기 함수
+            function getCookie(name) {
+                let matches = document.cookie.match(new RegExp(
+                    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+                ));
+                return matches ? decodeURIComponent(matches[1]) : undefined;
+            }
+
+            // 'hideGlobalPopup' 쿠키가 없고 마감 시간 이전이면 팝업 노출
+            if (now < popupDeadline && !getCookie('hideGlobalPopup')) {
+                popup.style.display = 'block';
+                overlay.style.display = 'block';
+            }
+
+            window.closePopup = function(type) {
+                popup.style.display = 'none';
+                overlay.style.display = 'none';
+
+                if (type === 'today') {
+                    // 오늘 하루 보지않기: 자정까지 유효한 쿠키를 전체 도메인(path=/)에 생성
+                    let tomorrow = new Date();
+                    tomorrow.setHours(23, 59, 59, 999);
+                    document.cookie = "hideGlobalPopup=true; expires=" + tomorrow.toUTCString() + "; path=/";
+                } else if (type === 'close') {
+                    // 그냥 닫기를 누른 경우에도 현재 세션(브라우저를 끄기 전까지) 동안은 다시 안 뜨도록 세션 쿠키 생성
+                    document.cookie = "hideGlobalPopup=true; path=/";
+                }
+            };
+        });
     </script>
 </body>
 </html>
