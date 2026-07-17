@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ⭐️ 새롭게 생성한 서서울호수공원 전용 API 서버 주소
     const API_BASE = 'https://kny-summerdb.tonycho999.workers.dev';
-
     let currentYear = 2026;
     let currentMonth = 7;
     
@@ -34,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderDefaultTimeSlots() {
         const rule = RULES[selectedLocation];
         if (!rule) return;
-
         timeListContainer.innerHTML = ''; 
         rule.slots.forEach(slot => {
             const label = document.createElement('label');
@@ -108,8 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const firstDay = new Date(year, month - 1, 1).getDay();
         const lastDate = new Date(year, month, 0).getDate();
         const rule = RULES[selectedLocation];
-
         let date = 1;
+
         for (let i = 0; i < 6; i++) {
             const row = document.createElement('tr');
             for (let j = 0; j < 7; j++) {
@@ -156,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedDateDisplay.textContent = dateStr; 
         
         timeListContainer.innerHTML = '<p style="text-align:center; padding:20px; color:#666;">잔여 인원 조회 중...</p>';
-
         const rule = RULES[selectedLocation];
         
         try {
@@ -167,14 +164,12 @@ document.addEventListener('DOMContentLoaded', () => {
             bookedData.forEach(item => {
                 bookedMap[item.time_slot] = item.booked;
             });
-
             timeListContainer.innerHTML = ''; 
             
             rule.slots.forEach(slot => {
                 const bookedCount = bookedMap[slot] || 0;
                 const remainCount = rule.capacity - bookedCount;
                 const isFull = remainCount <= 0;
-
                 const label = document.createElement('label');
                 label.className = `time-item ${isFull ? 'disabled' : ''}`;
                 
@@ -189,7 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 timeListContainer.appendChild(label);
             });
-
         } catch (error) {
             timeListContainer.innerHTML = '<p style="color:red; text-align:center;">데이터를 불러오는 데 실패했습니다.</p>';
             renderDefaultTimeSlots(); 
@@ -213,10 +207,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (reserveForm) {
         reserveForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-
             if (!hiddenDateInput.value) return alert('달력에서 예약 날짜를 선택해주세요.');
             const timeSlot = document.querySelector('input[name="timeSlot"]:checked');
             if (!timeSlot) return alert('예약 시간을 선택해주세요.');
+            
+            // ⭐️ 양천구민 확인을 위한 주소 검증 로직 추가 ⭐️
+            const address1 = document.getElementById('address1').value;
+            if (!address1.includes('양천구')) {
+                alert('죄송합니다. 양천구민 확인을 위해 주소에 "양천구"가 포함되어야 예약이 가능합니다.\n올바른 양천구 주소를 입력해 주세요.');
+                return; // 여기서 더 이상 진행하지 않고 막습니다.
+            }
             
             const agree = document.getElementById('privacyAgree');
             if (!agree.checked) return alert('개인정보 수집 및 이용에 동의해주세요.');
