@@ -23,7 +23,6 @@
             background-color: rgba(255, 255, 255, 0.65); 
             z-index: -1; 
         }
-
         /* ⭐️ 이벤트 팝업 스타일 (모바일 기본) */
         #eventPopup {
             display: none; 
@@ -48,7 +47,6 @@
             background: rgba(0,0,0,0.6);
             z-index: 9998;
         }
-
         .popup-header {
             background-color: #0056b3;
             color: white;
@@ -57,33 +55,28 @@
             font-size: 1.2rem; 
             font-weight: bold;
         }
-
         .popup-body {
             padding: 25px 20px;
             text-align: center;
             line-height: 1.7;
         }
-
         .popup-body h3 {
             color: #d9534f;
             margin-top: 0;
             margin-bottom: 15px;
             font-size: 1.3rem;
         }
-
         .popup-body p {
             margin: 10px 0;
             color: #333;
             font-weight: bold;
             font-size: 1.1rem;
         }
-
         .popup-footer {
             background-color: #f8f9fa;
             display: flex;
             border-top: 1px solid #ddd;
         }
-
         .popup-btn {
             padding: 15px;
             border: none;
@@ -98,7 +91,6 @@
         .btn-today { flex: 7; border-right: 1px solid #ddd; }
         .btn-close { flex: 3; }
         .popup-btn:hover { background-color: #e2e2e2; }
-
         /* ⭐️ PC 화면용 팝업 확대 스타일 */
         @media (min-width: 769px) {
             #eventPopup { max-width: 600px; border-radius: 20px; }
@@ -112,7 +104,6 @@
 </head>
 <body>
     <div id="header-placeholder"></div>
-
     <main class="container reserve-container">
         <h2 style="text-align: center; margin-bottom: 2rem;">예약하기</h2>
         
@@ -139,12 +130,10 @@
                 </table>
                 <p class="step-desc">원하시는 날짜를 선택하세요.</p>
             </div>
-
             <div class="step-box">
                 <div class="step-title" id="selectedDateDisplay">날짜를 먼저 선택해주세요</div>
                 <div class="time-list" id="timeList"></div>
             </div>
-
             <div class="step-box">
                 <div class="step-title">예약자 정보</div>
                 <p class="step-desc" style="text-align: right; font-size: 0.8rem;">보호자 1인 ~ 4인 예약 가능</p>
@@ -163,7 +152,6 @@
                             <input type="text" id="email2" style="width:50%" required>
                         </div>
                     </div>
-
                     <div class="form-row">
                         <label>연락처 *</label>
                         <div class="flex-row">
@@ -172,7 +160,6 @@
                             <input type="text" id="phone3" style="width:30%" maxlength="4" required>
                         </div>
                     </div>
-
                     <div class="form-row">
                         <label>생년월일 *</label>
                         <div class="flex-row">
@@ -181,7 +168,6 @@
                             <input type="number" id="birthDay" placeholder="DD" style="width:25%" required> 일
                         </div>
                     </div>
-
                     <div class="form-row">
                         <label>주소 *</label>
                         <div class="flex-row" style="margin-bottom: 5px;">
@@ -190,8 +176,9 @@
                         </div>
                         <input type="text" id="address1" placeholder="기본주소" readonly style="width:100%; margin-bottom:5px; background:#f0f0f0;" required>
                         <input type="text" id="address2" placeholder="상세주소" style="width:100%;" required>
+                        <!-- ⭐️ 추가된 안내 문구 ⭐️ -->
+                        <p style="color: #dc3545; font-size: 0.85rem; margin-top: 5px; margin-bottom: 0;">* 양천구민 확인을 위한 주소(동까지만 입력 가능)입력 후 예약 신청이 완료됩니다.<br>예) 서울시 양천구 신월동</p>
                     </div>
-
                     <div class="form-row">
                         <label>인원 *</label>
                         <div class="counter-box">
@@ -200,7 +187,6 @@
                             <button type="button" id="btnPlus">+</button>
                         </div>
                     </div>
-
                     <div class="privacy-box">
                         <strong>개인정보 수집 및 이용 안내</strong>
                         <p>- 수집항목: 성명, 이메일, 연락처, 생년월일, 주소</p>
@@ -237,9 +223,7 @@
             <button class="popup-btn btn-close" onclick="closePopup('close')">닫기</button>
         </div>
     </div>
-
     <div id="footer-placeholder"></div>
-
     <script src="js/main.js"></script>
     <script src="js/reserve.js"></script>
     <script>
