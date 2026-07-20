@@ -211,13 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const timeSlot = document.querySelector('input[name="timeSlot"]:checked');
             if (!timeSlot) return alert('예약 시간을 선택해주세요.');
             
-            // ⭐️ 양천구민 확인을 위한 주소 검증 로직 추가 ⭐️
-            const address1 = document.getElementById('address1').value;
-            if (!address1.includes('양천구')) {
-                alert('죄송합니다. 양천구민 확인을 위해 주소에 "양천구"가 포함되어야 예약이 가능합니다.\n올바른 양천구 주소를 입력해 주세요.');
-                return; // 여기서 더 이상 진행하지 않고 막습니다.
-            }
-            
             const agree = document.getElementById('privacyAgree');
             if (!agree.checked) return alert('개인정보 수집 및 이용에 동의해주세요.');
 
