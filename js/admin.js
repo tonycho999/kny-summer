@@ -12,10 +12,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const filterDate = document.getElementById('filterDate');
     const filterTime = document.getElementById('filterTime');
     
-    // ⭐️ 새 서버 주소 유지
-    const GET_URL = 'https://kny-summerdb.tonycho999.workers.dev/api/reservations';
-    const UPDATE_URL = 'https://kny-summerdb.tonycho999.workers.dev/api/update-status';
+    // ⭐️ 운영 설정 (우천 휴장) 엘리먼트들
+    const settingDateInput = document.getElementById('settingDate');
+    const noticeActiveCheckbox = document.getElementById('noticeActive');
+    const slotCheckboxes = document.querySelectorAll('.slot-checkbox');
+    const btnSaveSettings = document.getElementById('btnSaveSettings');
 
+    // ⭐️ 서버 주소
+    const API_BASE = 'https://kny-summerdb.tonycho999.workers.dev';
+    const GET_URL = `${API_BASE}/api/reservations`;
+    const UPDATE_URL = `${API_BASE}/api/update-status`;
+    const SETTINGS_URL = `${API_BASE}/api/settings`;
+    
     let allReservations = []; 
 
     function getStatusStyle(status) {
@@ -37,7 +45,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (dataToRender.length === 0) {
             reservationList.innerHTML = '<tr><td colspan="6">일치하는 예약 내역이 없습니다.</td></tr>';
-            // 데이터가 없으면 인원수도 0으로 업데이트
             if(totalBookedEl) totalBookedEl.textContent = '0';
             if(totalCanceledEl) totalCanceledEl.textContent = '0';
             return;
@@ -90,7 +97,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             selectElement.addEventListener('change', async (e) => {
                 const reservationId = e.target.getAttribute('data-id');
                 const newStatus = e.target.value;
-
                 try {
                     const updateRes = await fetch(UPDATE_URL, {
                         method: 'PUT',
@@ -132,7 +138,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const matchLoc = loc === "" || item.location.includes(loc);
             const matchDate = date === "" || item.date === date;
             
-            // ⭐️ 시간 필터 매칭 로직 (선택한 필터 텍스트가 item.time_slot 문자열 안에 포함되는지 검사)
             const matchTime = time === "" || item.time_slot.includes(time);
 
             return matchKeyword && matchLoc && matchDate && matchTime;
@@ -145,12 +150,98 @@ document.addEventListener('DOMContentLoaded', async () => {
         if(el) el.addEventListener('input', applyFilters);
     });
 
+    // ==========================================
+    // ⭐️ [신규 추가] 운영 설정(우천 휴장) 연동 로직
+    // ==========================================
+    
+    // 1. 날짜 선택 시 해당 날짜의 기존 설정 불러오기
+    if (settingDateInput) {
+        settingDateInput.addEventListener('change', async (e) => {
+            const dateStr = e.target.value;
+            if (!dateStr) return;
+
+            try {
+                const res = await fetch(`${SETTINGS_URL}?date=${dateStr}&location=서서울호수공원`);
+                const data = await res.json();
+                
+                if (res.ok && data.success) {
+                    // 공지 ON/OFF 세팅
+                    noticeActiveCheckbox.checked = data.is_notice_active;
+                    
+                    // 회차 마감 체크박스 세팅
+                    slotCheckboxes.forEach(cb => {
+                        cb.checked = data.closed_slots.includes(cb.value);
+                    });
+                }
+            } catch (error) {
+                console.error('설정 불러오기 실패:', error);
+            }
+        });
+    }
+
+    // 2. 설정 저장 버튼 클릭 시 API 전송
+    if (btnSaveSettings) {
+        btnSaveSettings.addEventListener('click', async () => {
+            const dateStr = settingDateInput.value;
+            if (!dateStr) return alert('설정할 날짜를 먼저 선택해주세요!');
+
+            const isNoticeActive = noticeActiveCheckbox.checked;
+            const closedSlots = Array.from(slotCheckboxes)
+                                    .filter(cb => cb.checked)
+                                    .map(cb => cb.value);
+
+            btnSaveSettings.textContent = '저장 중...';
+            btnSaveSettings.disabled = true;
+
+            try {
+                const res = await fetch(SETTINGS_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        target_date: dateStr,
+                        location: '서서울호수공원',
+                        is_notice_active: isNoticeActive,
+                        closed_slots: closedSlots
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    alert(`${dateStr} 운영 설정이 성공적으로 저장되었습니다!`);
+                } else {
+                    alert('설정 저장에 실패했습니다.');
+                }
+            } catch (error) {
+                alert('네트워크 오류가 발생했습니다.');
+            } finally {
+                btnSaveSettings.textContent = '설정 저장';
+                btnSaveSettings.disabled = false;
+            }
+        });
+    }
+
+    // ⭐️ 초기 데이터 로드
     try {
         const response = await fetch(GET_URL);
         const data = await response.json();
-        allReservations = data;
+        
+        // 최신 날짜순, 회차순 정렬
+        allReservations = data.sort((a, b) => {
+            if (a.date !== b.date) return new Date(b.date) - new Date(a.date);
+            return a.time_slot.localeCompare(b.time_slot);
+        });
+
         renderTable(allReservations);
     } catch (error) {
         reservationList.innerHTML = '<tr><td colspan="6">데이터를 불러오는 데 실패했습니다.</td></tr>';
+    }
+
+    // 오늘 날짜를 설정 입력칸 기본값으로 세팅
+    if (settingDateInput) {
+        const today = new Date();
+        const offset = today.getTimezoneOffset() * 60000;
+        const dateLocal = (new Date(today - offset)).toISOString().split('T')[0];
+        settingDateInput.value = dateLocal;
+        settingDateInput.dispatchEvent(new Event('change')); // 이벤트 강제 발생시켜 설정 불러오기
     }
 });
