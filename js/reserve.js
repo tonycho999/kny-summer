@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCalendar(currentYear, currentMonth);
     });
 
-    // === 잔여인원 로드 ===
+    // === 잔여인원 및 관리자 우천 마감 설정 로드 ===
     async function handleDateClick(cell, dateStr) {
         document.querySelectorAll('#calendarBody td').forEach(td => td.classList.remove('selected'));
         cell.classList.add('selected');
@@ -153,13 +153,22 @@ document.addEventListener('DOMContentLoaded', () => {
         hiddenDateInput.value = dateStr;
         selectedDateDisplay.textContent = dateStr; 
         
-        timeListContainer.innerHTML = '<p style="text-align:center; padding:20px; color:#666;">잔여 인원 조회 중...</p>';
+        timeListContainer.innerHTML = '<p style="text-align:center; padding:20px; color:#666;">데이터를 조회 중입니다...</p>';
         const rule = RULES[selectedLocation];
         
         try {
-            const response = await fetch(`${API_BASE}/api/capacity?location=${encodeURIComponent(selectedLocation)}&date=${dateStr}`);
-            const bookedData = await response.json();
+            // ⭐️ 잔여 인원과 설정 상태를 동시에 가져옵니다.
+            const [capacityRes, settingsRes] = await Promise.all([
+                fetch(`${API_BASE}/api/capacity?location=${encodeURIComponent(selectedLocation)}&date=${dateStr}`),
+                fetch(`${API_BASE}/api/settings?date=${dateStr}&location=${encodeURIComponent(selectedLocation)}`)
+            ]);
+
+            const bookedData = await capacityRes.json();
+            const settingsData = await settingsRes.json();
             
+            // ⭐️ 닫힌 회차 목록 가져오기
+            const closedSlots = settingsData.success ? settingsData.closed_slots : [];
+
             const bookedMap = {};
             bookedData.forEach(item => {
                 bookedMap[item.time_slot] = item.booked;
@@ -169,16 +178,30 @@ document.addEventListener('DOMContentLoaded', () => {
             rule.slots.forEach(slot => {
                 const bookedCount = bookedMap[slot] || 0;
                 const remainCount = rule.capacity - bookedCount;
-                const isFull = remainCount <= 0;
+                
+                // ⭐️ 마감 조건: 인원이 다 찼거나 OR 관리자가 닫아버렸거나
+                const isCapacityFull = remainCount <= 0;
+                const isForceClosed = closedSlots.includes(slot);
+                const isFull = isCapacityFull || isForceClosed;
+
                 const label = document.createElement('label');
                 label.className = `time-item ${isFull ? 'disabled' : ''}`;
                 
+                let statusText = '';
+                if (isForceClosed) {
+                    statusText = '(우천 등 기상악화로 마감)';
+                } else if (isCapacityFull) {
+                    statusText = '(마감)';
+                } else {
+                    statusText = `(잔여: ${remainCount}명 / 정원: ${rule.capacity}명)`;
+                }
+
                 label.innerHTML = `
                     <input type="radio" name="timeSlot" value="${slot}" ${isFull ? 'disabled' : ''}>
                     <span style="${isFull ? 'color:#dc3545; text-decoration:line-through;' : ''}">
                         ${slot} <br>
                         <small style="color:${isFull ? '#dc3545' : '#28a745'}">
-                            (잔여: ${isFull ? '마감' : remainCount + '명'} / 정원: ${rule.capacity}명)
+                            ${statusText}
                         </small>
                     </span>
                 `;
