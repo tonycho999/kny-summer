@@ -235,8 +235,6 @@
                     let tomorrow = new Date();
                     tomorrow.setHours(23, 59, 59, 999);
                     document.cookie = `${cookieName}=true; expires=${tomorrow.toUTCString()}; path=/`;
-                } else {
-                    document.cookie = `${cookieName}=true; path=/`;
                 }
             }
 
