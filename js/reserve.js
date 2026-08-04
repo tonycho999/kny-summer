@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ⭐️ 새롭게 생성한 서서울호수공원 전용 API 서버 주소
     const API_BASE = 'https://kny-summerdb.tonycho999.workers.dev';
     let currentYear = 2026;
-    let currentMonth = 7;
+    let currentMonth = 8;
     
     // 단일 장소 고정
     let selectedLocation = "서서울호수공원";
