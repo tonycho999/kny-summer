@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     // === ⭐️ 2026년 서서울호수공원 운영 정책 설정 ===
     const RULES = {
         "서서울호수공원": {
@@ -162,7 +161,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 fetch(`${API_BASE}/api/capacity?location=${encodeURIComponent(selectedLocation)}&date=${dateStr}`),
                 fetch(`${API_BASE}/api/settings?date=${dateStr}&location=${encodeURIComponent(selectedLocation)}`)
             ]);
-
             const bookedData = await capacityRes.json();
             const settingsData = await settingsRes.json();
             
@@ -173,6 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             bookedData.forEach(item => {
                 bookedMap[item.time_slot] = item.booked;
             });
+
             timeListContainer.innerHTML = ''; 
             
             rule.slots.forEach(slot => {
@@ -207,6 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 timeListContainer.appendChild(label);
             });
+
         } catch (error) {
             timeListContainer.innerHTML = '<p style="color:red; text-align:center;">데이터를 불러오는 데 실패했습니다.</p>';
             renderDefaultTimeSlots(); 
@@ -230,16 +230,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (reserveForm) {
         reserveForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+
             if (!hiddenDateInput.value) return alert('달력에서 예약 날짜를 선택해주세요.');
             const timeSlot = document.querySelector('input[name="timeSlot"]:checked');
             if (!timeSlot) return alert('예약 시간을 선택해주세요.');
             
-            // ⭐️ 양천구민 확인을 위한 주소 검증 로직 추가 ⭐️
-            const address1 = document.getElementById('address1').value;
-            if (!address1.includes('양천구')) {
-                alert('죄송합니다. 양천구민 확인을 위해 주소에 "양천구"가 포함되어야 예약이 가능합니다.\n올바른 양천구 주소를 입력해 주세요.');
-                return; 
-            }
+            /* ⭐️ 양천구민 제한 로직 삭제됨 ⭐️ */
             
             const agree = document.getElementById('privacyAgree');
             if (!agree.checked) return alert('개인정보 수집 및 이용에 동의해주세요.');
@@ -298,7 +294,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <strong style="color:#555;">👨‍👩‍👧‍👦 예약 인원</strong> <span style="font-weight:bold;">${peopleInput.value}명</span>
                                     </div>
                                 </div>
-
                                 <div style="margin-top: 15px; padding-top: 15px; border-top: 2px dashed #0056b3; text-align: center;">
                                     <span style="font-size: 0.9rem; color: #888; display: block; margin-bottom: 5px;">예약 번호</span>
                                     <span style="display: inline-block; font-size: 1.8rem; font-weight: bold; color: #0056b3; letter-spacing: 2px; font-family: monospace;">${result.reservation_code}</span>
@@ -320,7 +315,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             const btn = this;
                             btn.textContent = '사진 저장 중...';
                             btn.disabled = true;
-
                             const targetEl = document.getElementById('ticketArea');
                             
                             html2canvas(targetEl, { scale: 2 }).then(canvas => {
