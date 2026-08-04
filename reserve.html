@@ -3,9 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ⭐️ 캐시 방지 메타 태그 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <!-- 🧨 ⭐️ [초강력 캐시/쿠키 강제 삭제 및 새로고침 스크립트] ⭐️ 🧨 -->
+    <script>
+        (function() {
+            // 이번 업데이트 고유 번호
+            var UPDATE_VERSION = "20260804_v3";
+            
+            if (localStorage.getItem("app_update_version") !== UPDATE_VERSION) {
+                // 1. 모든 로컬 저장소 삭제
+                localStorage.clear();
+                sessionStorage.clear();
+                
+                // 2. 브라우저의 모든 쿠키 강제 삭제
+                document.cookie.split(";").forEach(function(c) { 
+                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+                });
+
+                // 3. 폰에 최신 버전 번호 저장 (무한 새로고침 방지)
+                localStorage.setItem("app_update_version", UPDATE_VERSION);
+                
+                // 4. 주소창 끝에 꼬리표를 붙여서 강제 새로고침
+                var currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('v', UPDATE_VERSION);
+                window.location.replace(currentUrl.href);
+            }
+        })();
+    </script>
+
     <title>예약하기 - 서서울호수공원 어린이 물놀이장</title>
-    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- ⭐️ CSS 버저닝 추가 -->
+    <link rel="stylesheet" href="css/style.css?v=20260804_v3">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
     <style>
         body {
             background-image: url('public/images/서서울호수공원2.png');
@@ -23,6 +59,7 @@
             background-color: rgba(255, 255, 255, 0.65); 
             z-index: -1; 
         }
+
         /* ⭐️ 이벤트 팝업 스타일 (모바일 기본) */
         #eventPopup {
             display: none; 
@@ -91,6 +128,7 @@
         .btn-today { flex: 7; border-right: 1px solid #ddd; }
         .btn-close { flex: 3; }
         .popup-btn:hover { background-color: #e2e2e2; }
+
         /* ⭐️ PC 화면용 팝업 확대 스타일 */
         @media (min-width: 769px) {
             #eventPopup { max-width: 600px; border-radius: 20px; }
@@ -104,6 +142,7 @@
 </head>
 <body>
     <div id="header-placeholder"></div>
+
     <main class="container reserve-container">
         <h2 style="text-align: center; margin-bottom: 2rem;">예약하기</h2>
         
@@ -130,10 +169,12 @@
                 </table>
                 <p class="step-desc">원하시는 날짜를 선택하세요.</p>
             </div>
+
             <div class="step-box">
                 <div class="step-title" id="selectedDateDisplay">날짜를 먼저 선택해주세요</div>
                 <div class="time-list" id="timeList"></div>
             </div>
+
             <div class="step-box">
                 <div class="step-title">예약자 정보</div>
                 <p class="step-desc" style="text-align: right; font-size: 0.8rem;">보호자 1인 ~ 4인 예약 가능</p>
@@ -152,6 +193,7 @@
                             <input type="text" id="email2" style="width:50%" required>
                         </div>
                     </div>
+
                     <div class="form-row">
                         <label>연락처 *</label>
                         <div class="flex-row">
@@ -160,6 +202,7 @@
                             <input type="text" id="phone3" style="width:30%" maxlength="4" required>
                         </div>
                     </div>
+
                     <div class="form-row">
                         <label>생년월일 *</label>
                         <div class="flex-row">
@@ -168,6 +211,7 @@
                             <input type="number" id="birthDay" placeholder="DD" style="width:25%" required> 일
                         </div>
                     </div>
+
                     <div class="form-row">
                         <label>주소 *</label>
                         <div class="flex-row" style="margin-bottom: 5px;">
@@ -177,6 +221,7 @@
                         <input type="text" id="address1" placeholder="기본주소" readonly style="width:100%; margin-bottom:5px; background:#f0f0f0;" required>
                         <input type="text" id="address2" placeholder="상세주소" style="width:100%;" required>
                     </div>
+
                     <div class="form-row">
                         <label>인원 *</label>
                         <div class="counter-box">
@@ -185,6 +230,7 @@
                             <button type="button" id="btnPlus">+</button>
                         </div>
                     </div>
+
                     <div class="privacy-box">
                         <strong>개인정보 수집 및 이용 안내</strong>
                         <p>- 수집항목: 성명, 이메일, 연락처, 생년월일, 주소</p>
@@ -193,6 +239,7 @@
                             <input type="checkbox" id="privacyAgree" required> (필수) 개인정보 수집 및 이용에 동의합니다.
                         </label>
                     </div>
+
                     <button type="submit" class="submit-btn" style="margin-top: 1rem;">예약 신청하기</button>
                 </form>
             </div>
@@ -221,9 +268,13 @@
             <button class="popup-btn btn-close" onclick="closePopup('close')">닫기</button>
         </div>
     </div>
+
     <div id="footer-placeholder"></div>
-    <script src="js/main.js"></script>
-    <script src="js/reserve.js"></script>
+
+    <!-- ⭐️ JS 버저닝 추가 -->
+    <script src="js/main.js?v=20260804_v3"></script>
+    <script src="js/reserve.js?v=20260804_v3"></script>
+
     <script>
         async function loadIncludes() {
             try {
@@ -274,7 +325,6 @@
             window.closePopup = function(type) {
                 popup.style.display = 'none';
                 overlay.style.display = 'none';
-
                 if (type === 'today') {
                     // 오늘 하루 보지않기: 자정까지 유효한 쿠키를 전체 도메인(path=/)에 생성
                     let tomorrow = new Date();
